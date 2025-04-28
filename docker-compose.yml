@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  secure-transaction:
+    build: .
+    volumes:
+      - ./:/app
+    # ports:
+    #   - "5000:5000"  # Nếu ứng dụng là web service
+    command: python app.py
