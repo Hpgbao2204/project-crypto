@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  secure-transaction:
+    build: .
+    container_name: secure-demo
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data  # Mount thư mục data để lưu trữ bền vững
+    # command: python app.py # Lệnh này đã có trong Dockerfile
