@@ -1,2 +1,0 @@
-# project-crypto
-Project Crypto

@@ -1,7 +1,5 @@
-pycryptodome==3.18.0
-cryptography==41.0.3
-charm-crypto==0.43
-dilithium-py==0.1.3
-xoflib==0.0.2
+cryptography==44.0.2
+dilithium-py==1.1.0
+xoflib==0.3.1
+Flask==3.1.0
 requests==2.31.0
-flask==2.3.3
