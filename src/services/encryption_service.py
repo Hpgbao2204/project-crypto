@@ -87,9 +87,13 @@ class EncryptionService:
         # Get global parameters
         gp = self.get_global_parameters()
         
-        # Get authority secret key
+        # Check if authority exists, if not set it up
         sk_path = os.path.join(current_app.config['UPLOAD_FOLDER'], f"{authority_name}_sk.json")
+        if not os.path.exists(sk_path):
+            current_app.logger.info(f"Setting up new authority: {authority_name}")
+            self.setup_authority(authority_name)
         
+        # Get authority secret key
         with open(sk_path, 'r') as f:
             sk = json.load(f)
         
@@ -113,6 +117,10 @@ class EncryptionService:
         
         # Save user keys
         keys_path = os.path.join(current_app.config['UPLOAD_FOLDER'], f"user_{user_id}_keys.json")
+        
+        # Remove the line that was causing an error (user is not defined)
+        if os.path.exists(keys_path):
+            current_app.logger.info(f"Keys already exist for user {user_id}")
         
         with open(keys_path, 'w') as f:
             json.dump(user_keys, f, indent=2)

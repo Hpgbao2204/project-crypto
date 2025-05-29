@@ -1,0 +1,44 @@
+{
+  "GID": "9",
+  "keys": {
+    "Doctor@Hospital": {
+      "attribute": "Doctor@Hospital",
+      "authority": "Hospital",
+      "encrypted_key": {
+        "iv": "yRoQ7yRqgDWU0Uwt",
+        "ciphertext": "kKcOkNv3xo1fzeqr0evsA/qO0Mk+8C+Eg8VWlIHMniM=",
+        "tag": "MDLqMQC9xGfeT4nyS/7O5A=="
+      }
+    },
+    "Nurse@Hospital": {
+      "attribute": "Nurse@Hospital",
+      "authority": "Hospital",
+      "encrypted_key": {
+        "iv": "Yy1auUJkg2Zn+mIC",
+        "ciphertext": "wfJbPHHf2/1uL8qa2X+sYJchOX4ENeL+C5sYZFcq8eM=",
+        "tag": "6sqN7eWEKs6Y0fVLui0mdg=="
+      }
+    },
+    "Admin@Hospital": {
+      "attribute": "Admin@Hospital",
+      "authority": "Hospital",
+      "encrypted_key": {
+        "iv": "oSdPWiKeDlDj2+w5",
+        "ciphertext": "zIxeaVboqPA0m3FG8LMbsYrkW+8LuRmwLG5yk8UcWT0=",
+        "tag": "LjdL3MF1xoOai1wMFQujLg=="
+      }
+    },
+    "Researcher@Hospital": {
+      "attribute": "Researcher@Hospital",
+      "authority": "Hospital",
+      "encrypted_key": {
+        "iv": "IoLPEvc3tCJ1oqJ0",
+        "ciphertext": "D0n5M0jhqoCQfo+lj8hftTdVVsnFzf8En5Cde0oGPc4=",
+        "tag": "lPoBIEin1HHY7D5u9DGfyQ=="
+      }
+    }
+  },
+  "authority_keys": {
+    "Hospital": "jXDxOEl663u2Pb0jzoWsuFQBTfv3Ppbv9Mn4IBN2s5M="
+  }
+}

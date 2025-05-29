@@ -10,7 +10,7 @@ from src.models.user import User
 from src.services.document_service import DocumentService
 from src.services.signature_service import SignatureService
 from src.utils.file_utils import allowed_file, get_file_path
-from src.main import db
+from src.extensions import db
 
 signature_bp = Blueprint('signature', __name__)
 

@@ -2,16 +2,18 @@
 User model for the web application.
 """
 
+# src/models/user.py
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from src.main import db
+from src.extensions import db  # Import từ extensions thay vì main
 
-# Association table for user attributes - Fixed with proper foreign keys
+# Association table for user attributes
 user_attributes = db.Table('user_attributes',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
     db.Column('attribute_id', db.Integer, db.ForeignKey('attribute.id'), primary_key=True)
 )
+
 
 class User(UserMixin, db.Model):
     """User model for authentication and attribute-based access control."""
@@ -31,7 +33,7 @@ class User(UserMixin, db.Model):
     
     # Relationship with attributes - fixed relationship
     attributes = db.relationship('Attribute', secondary=user_attributes, 
-                                 backref=db.backref('users', lazy='dynamic'))
+                                backref=db.backref('users', lazy='dynamic'))
     
     def __repr__(self):
         return f'<User {self.username}>'

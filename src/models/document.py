@@ -4,7 +4,7 @@ Document model for the web application.
 
 from datetime import datetime
 import os
-from src.main import db
+from src.extensions import db
 
 class Document(db.Model):
     """Document model for storing file information."""

@@ -28,13 +28,17 @@ class SignatureService:
         Returns:
             tuple: (public_key, encrypted_private_key)
         """
-        # Generate key pair
-        private_key, public_key = self.digital_signature.generate_key_pair()
+        try:
+        # Generate key pair - DO NOT pass user_id here!
+            private_key, public_key = self.digital_signature.generate_key_pair()
+            
+            # Encrypt private key
+            encrypted_private_key = self.digital_signature.encrypt_private_key(private_key, password)
         
-        # Encrypt private key
-        encrypted_private_key = self.digital_signature.encrypt_private_key(private_key, password)
-        
-        return public_key, encrypted_private_key
+            return public_key, encrypted_private_key
+        except Exception as e:
+            current_app.logger.error(f"Error generating key pair: {str(e)}")
+            raise
     
     def sign_document(self, document_path, user_id, password, encrypted_private_key):
         """

@@ -9,7 +9,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from urllib.parse import urlparse, urljoin
 from src.models.user import User
 from src.encryption.digital_signature import DigitalSignature
-from src.main import db
+from src.services.signature_service import SignatureService
+from src.extensions import db
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -86,6 +87,11 @@ def register():
             role=role
         )
         
+        # IMPORTANT: Add user to session first, but don't commit yet
+        db.session.add(new_user)
+        db.session.flush()  # This assigns an ID without committing
+
+        
         # Add attributes
         for key, value in request.form.items():
             if key.startswith('attribute_') and value == '1':
@@ -96,10 +102,10 @@ def register():
         
         # Generate signature keys
         try:
-            signature = DigitalSignature()
-            public_key, private_key_encrypted = signature.generate_key_pair(
-                username,  # Use username as identifier
-                password   # Use password to encrypt private key
+            signature_service = SignatureService()
+            public_key, private_key_encrypted = signature_service.generate_key_pair(
+                str(new_user.id) if new_user.id else username,  # Use user ID or username as identifier
+                password  # Use password to encrypt private key
             )
             
             new_user.public_key = public_key
@@ -109,6 +115,33 @@ def register():
             current_app.logger.error(f"Key generation error: {str(e)}")
             flash('Error generating signature keys', 'danger')
             return redirect(url_for('auth.register'))
+        
+        # Generate encryption keys for each authority
+        try:
+            # Group attributes by authority
+            authorities = {}
+            for attr in new_user.attributes:
+                if attr.authority_name not in authorities:
+                    authorities[attr.authority_name] = []
+                authorities[attr.authority_name].append(attr.name)
+            
+            # Create encryption service
+            from src.services.encryption_service import EncryptionService
+            encryption_service = EncryptionService()
+            
+            # Generate keys for each authority
+            for authority_name, attr_list in authorities.items():
+                try:
+                    encryption_service.generate_user_keys(str(new_user.id), authority_name, attr_list)
+                    current_app.logger.info(f"Generated keys for authority {authority_name}")
+                except Exception as e:
+                    current_app.logger.error(f"Error generating keys for authority {authority_name}: {str(e)}")
+                    # Continue with other authorities even if one fails
+            
+        except Exception as e:
+            current_app.logger.error(f"Error generating encryption keys: {str(e)}")
+            flash('Error generating encryption keys, some features may be unavailable', 'warning')
+            # Don't prevent registration if key generation fails
         
         # Save user to database
         db.session.add(new_user)
@@ -168,16 +201,15 @@ def change_password():
         # Re-encrypt private key with new password
         if current_user.private_key_encrypted:
             try:
-                signature = DigitalSignature()
-                
+                signature_service = SignatureService()
                 # First decrypt with old password
-                private_key = signature.decrypt_private_key(
+                private_key = signature_service.digital_signature.decrypt_private_key(
                     current_user.private_key_encrypted,
                     current_password
                 )
                 
                 # Then re-encrypt with new password
-                current_user.private_key_encrypted = signature.encrypt_private_key(
+                current_user.private_key_encrypted = signature_service.digital_signature.encrypt_private_key(
                     private_key,
                     new_password
                 )

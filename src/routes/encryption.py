@@ -11,7 +11,7 @@ from src.models.document import Document
 from src.services.document_service import DocumentService
 from src.services.encryption_service import EncryptionService
 from src.utils.file_utils import allowed_file, get_file_path
-from src.main import db
+from src.extensions import db
 
 encryption_bp = Blueprint('encryption', __name__)
 
