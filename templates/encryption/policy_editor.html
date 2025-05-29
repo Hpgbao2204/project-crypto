@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Policy Editor - Secure Document System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Access Policy Editor</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> This tool helps you create access policies for document encryption. Policies define who can access your encrypted documents based on their attributes.
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Available Attributes</h5>
+                    <p class="text-muted">Click on attributes to add them to your policy:</p>
+                    
+                    {% for authority, attrs in authorities.items() %}
+                        <div class="mb-3">
+                            <h6>{{ authority }}</h6>
+                            <div>
+                                {% for attr in attrs %}
+                                    <span class="attribute-tag" data-attribute="{{ attr }}@{{ authority }}">{{ attr }}@{{ authority }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Operators</h5>
+                    <button type="button" class="btn btn-sm btn-outline-secondary operator-btn" data-operator="AND">AND</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary operator-btn ms-1" data-operator="OR">OR</button>
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Your Policy</h5>
+                    <div class="input-group">
+                        <textarea class="form-control" id="policy" rows="3" placeholder="e.g., Doctor@Hospital OR Admin@Hospital"></textarea>
+                        <button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('policy').value = ''">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <small class="form-text text-muted">Use this policy when encrypting documents.</small>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-primary" onclick="copyToClipboard(document.getElementById('policy').value)">
+                        <i class="fas fa-copy me-1"></i> Copy Policy
+                    </button>
+                    <a href="{{ url_for('encryption.encrypt') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-lock me-1"></i> Go to Encryption
+                    </a>
+                </div>
+            </div>
+            <div class="card-footer">
+                <h5>Policy Examples</h5>
+                <ul>
+                    <li><code>Doctor@Hospital</code> - Only doctors can access</li>
+                    <li><code>Doctor@Hospital OR Admin@Hospital</code> - Doctors or admins can access</li>
+                    <li><code>Doctor@Hospital AND Researcher@Hospital</code> - Only users who are both doctors and researchers can access</li>
+                    <li><code>(Doctor@Hospital OR Nurse@Hospital) AND Admin@Hospital</code> - Users who are either doctors or nurses, and also admins</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

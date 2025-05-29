@@ -1,0 +1,89 @@
+=== Test: document_encryption ===
+Date: Wed May 28 02:22:34 EDT 2025
+Command: cd /home/ubuntu/martsia_project/web_app && python3 -c "
+from src.main import app, db
+from src.models.user import User
+from src.models.document import Document
+from src.services.encryption_service import EncryptionService
+from src.services.document_service import DocumentService
+import os
+
+with app.app_context():
+    # Get test users
+    admin_user = User.query.filter_by(username='admin_user').first()
+    
+    if not admin_user:
+        print('Admin user not found')
+        exit(1)
+    
+    # Get admin's documents
+    admin_docs = Document.query.filter_by(user_id=admin_user.id, doc_type='original').all()
+    
+    if not admin_docs:
+        print('No documents found for admin user')
+        exit(1)
+    
+    # Create services
+    encryption_service = EncryptionService()
+    document_service = DocumentService(db)
+    
+    # Test Hybrid ABE encryption
+    doc_to_encrypt = admin_docs[0]
+    access_policy = 'Doctor@Hospital OR Admin@Hospital'
+    
+    encrypted_path = encryption_service.encrypt_document(
+        doc_to_encrypt.get_file_path(),
+        'hybrid',
+        access_policy
+    )
+    
+    if not encrypted_path:
+        print('Encryption failed')
+        exit(1)
+    
+    # Save encrypted document
+    encrypted_doc = document_service.save_encrypted_document(
+        doc_to_encrypt.id,
+        os.path.basename(encrypted_path),
+        'hybrid',
+        access_policy,
+        admin_user.id
+    )
+    
+    print(f'Encrypted document with Hybrid ABE: {encrypted_doc.original_filename}, ID: {encrypted_doc.id}')
+    print(f'Access policy: {encrypted_doc.access_policy}')
+    
+    # If there's another document, test MA-ABE encryption
+    if len(admin_docs) > 1:
+        doc_to_encrypt = admin_docs[1]
+        access_policy = 'Doctor@Hospital AND Researcher@Hospital'
+        
+        encrypted_path = encryption_service.encrypt_document(
+            doc_to_encrypt.get_file_path(),
+            'maabe',
+            access_policy
+        )
+        
+        if not encrypted_path:
+            print('MA-ABE encryption failed')
+        else:
+            # Save encrypted document
+            encrypted_doc = document_service.save_encrypted_document(
+                doc_to_encrypt.id,
+                os.path.basename(encrypted_path),
+                'maabe',
+                access_policy,
+                admin_user.id
+            )
+            
+            print(f'Encrypted document with MA-ABE: {encrypted_doc.original_filename}, ID: {encrypted_doc.id}')
+            print(f'Access policy: {encrypted_doc.access_policy}')
+    
+    print('Encryption tests completed successfully')
+"
+---
+Traceback (most recent call last):
+  File "<string>", line 32, in <module>
+AttributeError: 'EncryptionService' object has no attribute 'encrypt_document'. Did you mean: 'decrypt_document'?
+Exit status: 1
+FAIL

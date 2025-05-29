@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Document List - Secure Document System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">My Documents</h4>
+                <div>
+                    <a href="{{ url_for('document.upload') }}" class="btn btn-primary">
+                        <i class="fas fa-upload me-1"></i> Upload New
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="btn-group" role="group">
+                        <a href="{{ url_for('document.list') }}" class="btn btn-outline-secondary {% if not request.args.get('type') %}active{% endif %}">All</a>
+                        <a href="{{ url_for('document.list', type='original') }}" class="btn btn-outline-secondary {% if request.args.get('type') == 'original' %}active{% endif %}">Original</a>
+                        <a href="{{ url_for('document.list', type='encrypted') }}" class="btn btn-outline-secondary {% if request.args.get('type') == 'encrypted' %}active{% endif %}">Encrypted</a>
+                        <a href="{{ url_for('document.list', type='signed') }}" class="btn btn-outline-secondary {% if request.args.get('type') == 'signed' %}active{% endif %}">Signed</a>
+                    </div>
+                </div>
+                
+                {% if documents %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Size</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for document in documents %}
+                                    <tr class="document-item">
+                                        <td>
+                                            {% if document.doc_type == 'original' %}
+                                                <i class="fas fa-file-alt text-primary document-icon"></i>
+                                            {% elif document.doc_type == 'encrypted' %}
+                                                <i class="fas fa-lock text-warning document-icon"></i>
+                                            {% elif document.doc_type == 'signed' %}
+                                                <i class="fas fa-file-signature text-success document-icon"></i>
+                                            {% endif %}
+                                            {{ document.original_filename }}
+                                        </td>
+                                        <td>
+                                            {% if document.doc_type == 'original' %}
+                                                Original
+                                            {% elif document.doc_type == 'encrypted' %}
+                                                Encrypted ({{ document.encryption_method }})
+                                            {% elif document.doc_type == 'signed' %}
+                                                Signed
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ (document.file_size / 1024)|round(1) }} KB</td>
+                                        <td>{{ document.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>
+                                            {% if document.doc_type == 'encrypted' %}
+                                                <span class="badge bg-warning text-dark">Encrypted</span>
+                                            {% elif document.is_signed %}
+                                                <span class="badge bg-success">Signed</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Regular</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{{ url_for('document.view', document_id=document.id) }}" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="View Details">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="{{ url_for('document.download', document_id=document.id) }}" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Download">
+                                                    <i class="fas fa-download"></i>
+                                                </a>
+                                                
+                                                {% if document.doc_type == 'original' and not document.is_signed %}
+                                                    <a href="{{ url_for('encryption.encrypt') }}" class="btn btn-sm btn-outline-warning" data-bs-toggle="tooltip" title="Encrypt">
+                                                        <i class="fas fa-lock"></i>
+                                                    </a>
+                                                    <a href="{{ url_for('signature.sign', document_id=document.id) }}" class="btn btn-sm btn-outline-success" data-bs-toggle="tooltip" title="Sign">
+                                                        <i class="fas fa-signature"></i>
+                                                    </a>
+                                                {% endif %}
+                                                
+                                                {% if document.doc_type == 'encrypted' %}
+                                                    <a href="{{ url_for('encryption.decrypt', document_id=document.id) }}" class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" title="Decrypt">
+                                                        <i class="fas fa-unlock"></i>
+                                                    </a>
+                                                {% endif %}
+                                                
+                                                {% if document.is_signed %}
+                                                    <a href="{{ url_for('signature.verify', document_id=document.id) }}" class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" title="Verify Signature">
+                                                        <i class="fas fa-check-circle"></i>
+                                                    </a>
+                                                {% endif %}
+                                                
+                                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Delete" onclick="confirmDelete('delete-form-{{ document.id }}')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                                <form id="delete-form-{{ document.id }}" action="{{ url_for('document.delete', document_id=document.id) }}" method="POST" class="d-none">
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> You don't have any documents yet. 
+                        <a href="{{ url_for('document.upload') }}" class="alert-link">Upload your first document</a>.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

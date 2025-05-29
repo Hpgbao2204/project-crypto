@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Secure Document System{% endblock %}
+
+{% block content %}
+<div class="jumbotron bg-light p-5 rounded">
+    <h1 class="display-4">Secure Document System</h1>
+    <p class="lead">Protect your sensitive documents with advanced encryption and digital signatures.</p>
+    <hr class="my-4">
+    <p>Our system combines Attribute-Based Encryption and Digital Signatures to provide secure document sharing with fine-grained access control.</p>
+    {% if not current_user.is_authenticated %}
+        <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}" role="button">Get Started</a>
+        <a class="btn btn-outline-primary btn-lg ms-2" href="{{ url_for('auth.login') }}" role="button">Login</a>
+    {% else %}
+        <a class="btn btn-primary btn-lg" href="{{ url_for('document.upload') }}" role="button">Upload Document</a>
+        <a class="btn btn-outline-primary btn-lg ms-2" href="{{ url_for('document.list') }}" role="button">My Documents</a>
+    {% endif %}
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4 mb-4">
+        <div class="card feature-card">
+            <div class="card-body text-center">
+                <div class="feature-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h5 class="card-title">Attribute-Based Encryption</h5>
+                <p class="card-text">Encrypt your documents with fine-grained access policies. Only users with matching attributes can decrypt and access your data.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card feature-card">
+            <div class="card-body text-center">
+                <div class="feature-icon">
+                    <i class="fas fa-signature"></i>
+                </div>
+                <h5 class="card-title">Digital Signatures</h5>
+                <p class="card-text">Sign your documents digitally to ensure authenticity and integrity. Verify signatures to confirm the document hasn't been tampered with.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card feature-card">
+            <div class="card-body text-center">
+                <div class="feature-icon">
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                <h5 class="card-title">Secure Sharing</h5>
+                <p class="card-text">Share your documents securely with specific individuals or groups based on their attributes and roles.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">How It Works</h5>
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li>Upload your document to the system</li>
+                    <li>Choose an encryption method (MA-ABE or Hybrid ABE)</li>
+                    <li>Define an access policy using attributes (e.g., "Doctor@Hospital OR Admin@Hospital")</li>
+                    <li>Encrypt and store your document securely</li>
+                    <li>Optionally sign your document with your digital signature</li>
+                    <li>Share the encrypted document with others</li>
+                </ol>
+                <p>Only users whose attributes satisfy the access policy will be able to decrypt and view the document.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Security Features</h5>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li><strong>Attribute-Based Access Control:</strong> Fine-grained control over who can access your documents</li>
+                    <li><strong>End-to-End Encryption:</strong> Documents are encrypted before leaving your browser</li>
+                    <li><strong>Digital Signatures:</strong> Verify document authenticity and integrity</li>
+                    <li><strong>Secure Key Management:</strong> Private keys are encrypted with your password</li>
+                    <li><strong>Audit Trail:</strong> Track document access and modifications</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

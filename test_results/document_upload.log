@@ -1,0 +1,71 @@
+=== Test: document_upload ===
+Date: Wed May 28 02:22:34 EDT 2025
+Command: cd /home/ubuntu/martsia_project/web_app && python3 -c "
+from src.main import app, db
+from src.models.user import User
+from src.models.document import Document
+from src.services.document_service import DocumentService
+import os
+import shutil
+
+with app.app_context():
+    # Get test users
+    admin_user = User.query.filter_by(username='admin_user').first()
+    doctor_user = User.query.filter_by(username='doctor_user').first()
+    
+    if not admin_user or not doctor_user:
+        print('Test users not found')
+        exit(1)
+    
+    # Create document service
+    document_service = DocumentService(db)
+    
+    # Test text document upload
+    text_file_path = '/home/ubuntu/martsia_project/web_app/test_files/test_document.txt'
+    
+    # Create a file-like object for testing
+    class MockFile:
+        def __init__(self, path):
+            self.path = path
+            self.filename = os.path.basename(path)
+            with open(path, 'rb') as f:
+                self.content = f.read()
+        
+        def read(self):
+            return self.content
+        
+        def save(self, path):
+            shutil.copy(self.path, path)
+    
+    mock_text_file = MockFile(text_file_path)
+    
+    # Upload document for admin user
+    admin_doc = document_service.save_document(mock_text_file, admin_user.id)
+    print(f'Uploaded text document for admin: {admin_doc.original_filename}, ID: {admin_doc.id}')
+    
+    # Upload document for doctor user
+    doctor_doc = document_service.save_document(mock_text_file, doctor_user.id)
+    print(f'Uploaded text document for doctor: {doctor_doc.original_filename}, ID: {doctor_doc.id}')
+    
+    # Test PDF document upload
+    pdf_file_path = '/home/ubuntu/martsia_project/web_app/test_files/test_document.pdf'
+    mock_pdf_file = MockFile(pdf_file_path)
+    
+    # Upload PDF for admin user
+    admin_pdf = document_service.save_document(mock_pdf_file, admin_user.id)
+    print(f'Uploaded PDF document for admin: {admin_pdf.original_filename}, ID: {admin_pdf.id}')
+    
+    print('Document uploads completed successfully')
+"
+---
+Traceback (most recent call last):
+  File "<string>", line 41, in <module>
+  File "/home/ubuntu/martsia_project/web_app/src/services/document_service.py", line 37, in save_document
+    filename, original_filename, file_type, file_size = save_uploaded_file(file)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/martsia_project/web_app/src/utils/file_utils.py", line 58, in save_uploaded_file
+    file_type = file.content_type or f"application/{file_extension}"
+                ^^^^^^^^^^^^^^^^^
+AttributeError: 'MockFile' object has no attribute 'content_type'
+Exit status: 1
+FAIL

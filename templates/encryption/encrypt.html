@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Encrypt Document - Secure Document System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Encrypt Document</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('encryption.encrypt') }}" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Select Document</label>
+                        <input type="file" class="form-control" id="file" name="file" required>
+                        <div id="file-preview" class="mt-2"></div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Encryption Method</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="encryption_method" id="hybrid" value="hybrid" checked>
+                            <label class="form-check-label" for="hybrid">
+                                Hybrid ABE (Recommended)
+                            </label>
+                            <small class="form-text text-muted d-block">Uses AES-GCM for data encryption with attribute-based access control.</small>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="encryption_method" id="maabe" value="maabe">
+                            <label class="form-check-label" for="maabe">
+                                MA-ABE (Advanced)
+                            </label>
+                            <small class="form-text text-muted d-block">Multi-Authority Attribute-Based Encryption using Rouselakis-Waters 2015 algorithm.</small>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="policy" class="form-label">Access Policy</label>
+                        <div class="policy-builder mb-2">
+                            <p class="text-muted">Click on attributes to add them to your policy:</p>
+                            <div class="mb-2">
+                                {% for attr in user_attributes %}
+                                    <span class="attribute-tag" data-attribute="{{ attr }}">{{ attr }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="mb-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary operator-btn" data-operator="AND">AND</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary operator-btn ms-1" data-operator="OR">OR</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary ms-1" onclick="document.getElementById('policy').value = ''">Clear</button>
+                            </div>
+                        </div>
+                        <textarea class="form-control" id="policy" name="access_policy" rows="3" placeholder="e.g., Doctor@Hospital OR Admin@Hospital" required></textarea>
+                        <small class="form-text text-muted">Define who can access this document using attributes and operators (AND, OR).</small>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Encrypt Document</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <h5>Policy Examples:</h5>
+                <ul>
+                    <li><code>Doctor@Hospital</code> - Only doctors can access</li>
+                    <li><code>Doctor@Hospital OR Admin@Hospital</code> - Doctors or admins can access</li>
+                    <li><code>Doctor@Hospital AND Researcher@Hospital</code> - Only users who are both doctors and researchers can access</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

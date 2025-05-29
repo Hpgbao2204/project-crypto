@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}About - Secure Document System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">About Secure Document System</h4>
+            </div>
+            <div class="card-body">
+                <h5>Overview</h5>
+                <p>
+                    Secure Document System is a comprehensive web application that combines advanced encryption and digital signature technologies to provide secure document management with fine-grained access control.
+                </p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h5>Key Features</h5>
+                        <ul>
+                            <li><strong>Attribute-Based Encryption:</strong> Control document access with fine-grained policies</li>
+                            <li><strong>Digital Signatures:</strong> Ensure document authenticity and integrity</li>
+                            <li><strong>Multiple Encryption Methods:</strong> Choose between MA-ABE and Hybrid ABE</li>
+                            <li><strong>Secure Key Management:</strong> Private keys are encrypted with user passwords</li>
+                            <li><strong>User-Friendly Interface:</strong> Easy-to-use web interface for all operations</li>
+                            <li><strong>Comprehensive Documentation:</strong> Detailed guidance for all features</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Technologies Used</h5>
+                        <ul>
+                            <li><strong>Backend:</strong> Flask (Python), SQLAlchemy</li>
+                            <li><strong>Frontend:</strong> HTML5, CSS3, JavaScript, Bootstrap</li>
+                            <li><strong>Encryption:</strong> MA-ABE, Hybrid ABE, AES-GCM</li>
+                            <li><strong>Digital Signatures:</strong> RSA with SHA-256</li>
+                            <li><strong>Database:</strong> SQLite (development), MySQL (production)</li>
+                            <li><strong>Authentication:</strong> Flask-Login, Password Hashing</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h5 class="mt-4">Encryption Methods</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">MA-ABE (Multi-Authority Attribute-Based Encryption)</h6>
+                            </div>
+                            <div class="card-body">
+                                <p>Based on the Rouselakis-Waters 2015 algorithm, MA-ABE provides:</p>
+                                <ul>
+                                    <li>Support for multiple attribute authorities</li>
+                                    <li>Complex access policies</li>
+                                    <li>Pairing-based cryptography for high security</li>
+                                    <li>Decentralized trust model</li>
+                                </ul>
+                                <p class="mb-0"><small class="text-muted">Best for: Highly sensitive documents requiring complex access control</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">Hybrid ABE</h6>
+                            </div>
+                            <div class="card-body">
+                                <p>Combines AES-GCM with attribute-based access control:</p>
+                                <ul>
+                                    <li>Fast symmetric encryption for document data</li>
+                                    <li>Attribute-based control for key access</li>
+                                    <li>Improved performance for larger documents</li>
+                                    <li>Standard cryptographic primitives</li>
+                                </ul>
+                                <p class="mb-0"><small class="text-muted">Best for: General use cases with good balance of security and performance</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h5 class="mt-4">Digital Signatures</h5>
+                <p>
+                    Our digital signature implementation uses RSA with SHA-256 to provide:
+                </p>
+                <ul>
+                    <li><strong>Authentication:</strong> Verify the identity of the document signer</li>
+                    <li><strong>Integrity:</strong> Ensure the document hasn't been modified since signing</li>
+                    <li><strong>Non-repudiation:</strong> Prevent signers from denying they signed a document</li>
+                </ul>
+                
+                <h5 class="mt-4">Security Considerations</h5>
+                <ul>
+                    <li>All private keys are encrypted with user passwords</li>
+                    <li>Document encryption uses industry-standard algorithms</li>
+                    <li>Access policies are enforced cryptographically, not just by access control</li>
+                    <li>Passwords are never stored in plaintext</li>
+                </ul>
+            </div>
+            <div class="card-footer text-center">
+                <p class="mb-0">© 2025 Secure Document System. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Decrypt Document - Secure Document System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Decrypt Document</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> You are attempting to decrypt the document <strong>{{ document.original_filename }}</strong>.
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Document Information</h5>
+                    <table class="table">
+                        <tr>
+                            <th style="width: 30%">Document Name:</th>
+                            <td>{{ document.original_filename }}</td>
+                        </tr>
+                        <tr>
+                            <th>Encryption Method:</th>
+                            <td>{{ document.encryption_method }}</td>
+                        </tr>
+                        <tr>
+                            <th>Access Policy:</th>
+                            <td><code>{{ document.access_policy }}</code></td>
+                        </tr>
+                        <tr>
+                            <th>Encrypted On:</th>
+                            <td>{{ document.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <form method="POST" action="{{ url_for('encryption.decrypt', document_id=document.id) }}">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i> Decryption will only succeed if your attributes satisfy the access policy.
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6>Your Attributes:</h6>
+                        <div>
+                            {% for attribute in current_user.attributes %}
+                                <span class="badge bg-primary">{{ attribute.name }}@{{ attribute.authority_name }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-unlock me-1"></i> Decrypt Document
+                        </button>
+                        <a href="{{ url_for('document.list') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <h5>How decryption works</h5>
+                <p>When decrypting a document:</p>
+                <ol>
+                    <li>The system checks if your attributes satisfy the access policy</li>
+                    <li>If they do, your attribute keys are used to decrypt the document key</li>
+                    <li>The document key is then used to decrypt the actual document</li>
+                    <li>If your attributes don't satisfy the policy, decryption will fail</li>
+                </ol>
+                <p>This ensures that only authorized users can access the document.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

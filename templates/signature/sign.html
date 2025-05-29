@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Document - Secure Document System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Sign Document</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> You are about to digitally sign the document <strong>{{ document.original_filename }}</strong>. This will create a cryptographic signature that verifies the document's authenticity and integrity.
+                </div>
+                
+                <form method="POST" action="{{ url_for('signature.sign', document_id=document.id) }}">
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Enter your password to confirm</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                        <small class="form-text text-muted">Your password is needed to access your private key for signing.</small>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-signature me-1"></i> Sign Document
+                        </button>
+                        <a href="{{ url_for('document.view', document_id=document.id) }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <h5>What is a digital signature?</h5>
+                <p>A digital signature is a mathematical scheme for verifying the authenticity of digital documents. When you sign a document:</p>
+                <ul>
+                    <li>A unique fingerprint (hash) of the document is created</li>
+                    <li>This fingerprint is encrypted with your private key</li>
+                    <li>The encrypted fingerprint becomes your signature</li>
+                    <li>Others can verify the signature using your public key</li>
+                </ul>
+                <p>This ensures that:</p>
+                <ul>
+                    <li><strong>Authentication:</strong> The document was signed by you</li>
+                    <li><strong>Integrity:</strong> The document hasn't been altered since signing</li>
+                    <li><strong>Non-repudiation:</strong> You cannot deny having signed the document</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

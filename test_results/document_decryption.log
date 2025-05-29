@@ -1,0 +1,87 @@
+=== Test: document_decryption ===
+Date: Wed May 28 02:22:35 EDT 2025
+Command: cd /home/ubuntu/martsia_project/web_app && python3 -c "
+from src.main import app, db
+from src.models.user import User
+from src.models.document import Document
+from src.services.encryption_service import EncryptionService
+from src.services.document_service import DocumentService
+import os
+
+with app.app_context():
+    # Get test users
+    doctor_user = User.query.filter_by(username='doctor_user').first()
+    doctor_researcher = User.query.filter_by(username='doctor_researcher').first()
+    
+    if not doctor_user or not doctor_researcher:
+        print('Test users not found')
+        exit(1)
+    
+    # Get encrypted documents
+    encrypted_docs = Document.query.filter_by(doc_type='encrypted').all()
+    
+    if not encrypted_docs:
+        print('No encrypted documents found')
+        exit(1)
+    
+    # Create services
+    encryption_service = EncryptionService()
+    document_service = DocumentService(db)
+    
+    # Test decryption with doctor user (should succeed for 'Doctor OR Admin' policy)
+    doc_to_decrypt = encrypted_docs[0]
+    
+    print(f'Attempting to decrypt document {doc_to_decrypt.id} with user {doctor_user.username}')
+    print(f'Document access policy: {doc_to_decrypt.access_policy}')
+    # Fixed f-string syntax
+    print(f'User attributes: {[f\"{attr.name}@{attr.authority_name}\" for attr in doctor_user.attributes]}')
+    
+    decrypted_path = encryption_service.decrypt_document(
+        doc_to_decrypt.get_file_path(),
+        doc_to_decrypt.encryption_method,
+        doctor_user.attributes
+    )
+    
+    if decrypted_path:
+        print(f'✅ Decryption succeeded for {doctor_user.username}')
+    else:
+        print(f'❌ Decryption failed for {doctor_user.username}')
+    
+    # Test decryption with doctor_researcher user (should succeed for both policies)
+    for doc in encrypted_docs:
+        print(f'Attempting to decrypt document {doc.id} with user {doctor_researcher.username}')
+        print(f'Document access policy: {doc.access_policy}')
+        # Fixed f-string syntax
+        print(f'User attributes: {[f\"{attr.name}@{attr.authority_name}\" for attr in doctor_researcher.attributes]}')
+        
+        decrypted_path = encryption_service.decrypt_document(
+            doc.get_file_path(),
+            doc.encryption_method,
+            doctor_researcher.attributes
+        )
+        
+        if decrypted_path:
+            print(f'✅ Decryption succeeded for {doctor_researcher.username}')
+        else:
+            print(f'❌ Decryption failed for {doctor_researcher.username}')
+    
+    print('Decryption tests completed')
+"
+---
+ERROR:src.main:Decryption failed: 
+ERROR:src.main:Decryption failed: 
+Attempting to decrypt document 4 with user doctor_user
+Document access policy: Doctor@Hospital OR Admin@Hospital
+User attributes: ['Doctor@Hospital']
+❌ Decryption failed for doctor_user
+Attempting to decrypt document 4 with user doctor_researcher
+Document access policy: Doctor@Hospital OR Admin@Hospital
+User attributes: ['Doctor@Hospital', 'Researcher@Hospital']
+❌ Decryption failed for doctor_researcher
+Attempting to decrypt document 5 with user doctor_researcher
+Document access policy: Doctor@Hospital AND Researcher@Hospital
+User attributes: ['Doctor@Hospital', 'Researcher@Hospital']
+✅ Decryption succeeded for doctor_researcher
+Decryption tests completed
+Exit status: 0
+PASS

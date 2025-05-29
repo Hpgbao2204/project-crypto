@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Verify Signature - Secure Document System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Verify Document Signature</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> You are about to verify the digital signature of document <strong>{{ document.original_filename }}</strong>.
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Document Information</h5>
+                    <table class="table">
+                        <tr>
+                            <th style="width: 30%">Document Name:</th>
+                            <td>{{ document.original_filename }}</td>
+                        </tr>
+                        <tr>
+                            <th>Signed By:</th>
+                            <td>{{ signer.username }}</td>
+                        </tr>
+                        <tr>
+                            <th>Signed On:</th>
+                            <td>{{ document.updated_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <form method="POST" action="{{ url_for('signature.verify', document_id=document.id) }}">
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check-circle me-1"></i> Verify Signature
+                        </button>
+                        <a href="{{ url_for('document.view', document_id=document.id) }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <h5>How signature verification works</h5>
+                <p>When verifying a digital signature:</p>
+                <ol>
+                    <li>The system calculates a new hash of the document</li>
+                    <li>The original signature is decrypted using the signer's public key</li>
+                    <li>The system compares the decrypted hash with the newly calculated hash</li>
+                    <li>If they match, the signature is valid and the document hasn't been altered</li>
+                </ol>
+                <p>This verification process ensures:</p>
+                <ul>
+                    <li><strong>Authenticity:</strong> The document was signed by the claimed signer</li>
+                    <li><strong>Integrity:</strong> The document hasn't been modified since it was signed</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

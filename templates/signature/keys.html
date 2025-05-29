@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Signature Keys - Secure Document System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Manage Digital Signature Keys</h4>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <h5>Your Current Keys</h5>
+                    
+                    {% if current_user.public_key %}
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i> You have a valid key pair for digital signatures.
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Public Key</label>
+                            <div class="input-group">
+                                <textarea class="form-control" rows="3" readonly>{{ current_user.public_key }}</textarea>
+                                <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('{{ current_user.public_key }}')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <small class="form-text text-muted">This is your public key that others can use to verify your signatures.</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <a href="{{ url_for('signature.export_public_key') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-download me-1"></i> Download Public Key
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i> You don't have signature keys yet. Generate a new key pair to start signing documents.
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Generate New Keys</h5>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> Generating new keys will replace your existing keys. Any previous signatures will still be valid, but you'll need to use the new keys for future signatures.
+                    </div>
+                    
+                    <form method="POST" action="{{ url_for('signature.manage_keys') }}">
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Enter your password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <small class="form-text text-muted">Your password is needed to encrypt your private key.</small>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-key me-1"></i> Generate New Key Pair
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card-footer">
+                <h5>About Digital Signature Keys</h5>
+                <p>Digital signatures use asymmetric cryptography with two keys:</p>
+                <ul>
+                    <li><strong>Private Key:</strong> Kept secret and used to create signatures. Never share this key!</li>
+                    <li><strong>Public Key:</strong> Shared with others so they can verify your signatures.</li>
+                </ul>
+                <p>In this system:</p>
+                <ul>
+                    <li>Your private key is encrypted with your password for security</li>
+                    <li>When you sign a document, you'll need to enter your password</li>
+                    <li>Others only need your public key to verify your signatures</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

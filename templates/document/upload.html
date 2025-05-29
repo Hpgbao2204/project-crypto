@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Document - Secure Document System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Upload Document</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('document.upload') }}" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Select Document</label>
+                        <input type="file" class="form-control" id="file" name="file" required>
+                        <div id="file-preview" class="mt-2"></div>
+                        <small class="form-text text-muted">Supported formats: PDF, TXT, DOC, DOCX</small>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload me-1"></i> Upload Document
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <h5>What happens next?</h5>
+                <p>After uploading your document, you can:</p>
+                <ul>
+                    <li><strong>Encrypt it</strong> with attribute-based access control</li>
+                    <li><strong>Sign it</strong> with your digital signature</li>
+                    <li><strong>Share it</strong> with other users</li>
+                </ul>
+                <p>All documents are stored securely and can only be accessed by authorized users.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

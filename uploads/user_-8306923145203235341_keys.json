@@ -1,0 +1,26 @@
+{
+  "GID": "-8306923145203235341",
+  "keys": {
+    "Doctor@Hospital": {
+      "attribute": "Doctor@Hospital",
+      "authority": "Hospital",
+      "encrypted_key": {
+        "iv": "0mRh4AcW8OjQjjVp",
+        "ciphertext": "J6w34FM7ncMHfabZR6jyDgzoz8MiVtxtgypi0JO67tI=",
+        "tag": "KdfaI3S0/fa8ij7/0blDOQ=="
+      }
+    },
+    "Researcher@Hospital": {
+      "attribute": "Researcher@Hospital",
+      "authority": "Hospital",
+      "encrypted_key": {
+        "iv": "gHIrEFxm9xKoXm8G",
+        "ciphertext": "DJWM9QsDkAaK20Y6Dkso64GiOa5+HYPOs3Tkv++4C+8=",
+        "tag": "b2wv3/9w1FeS06KfhsYhFw=="
+      }
+    }
+  },
+  "authority_keys": {
+    "Hospital": "IsxlUEz3WxIb2zb9jv5JAnvR2hATkBmaCQEhqouzjfw="
+  }
+}

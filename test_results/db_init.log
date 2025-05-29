@@ -1,0 +1,12 @@
+=== Test: db_init ===
+Date: Wed May 28 02:22:32 EDT 2025
+Command: cd /home/ubuntu/martsia_project/web_app && python3 -c "
+from src.main import app, db
+with app.app_context():
+    db.create_all()
+    print('Database initialized successfully')
+"
+---
+Database initialized successfully
+Exit status: 0
+PASS
