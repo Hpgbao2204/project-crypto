@@ -1,0 +1,26 @@
+{
+  "GID": "6408296306196735533",
+  "keys": {
+    "Professor@University": {
+      "attribute": "Professor@University",
+      "authority": "University",
+      "encrypted_key": {
+        "iv": "KsX3AbqL8Vv87LdS",
+        "ciphertext": "0wyANEo1wCsEzyJeRCfxLQEmax8Atmk7zJfe3nU0NHs=",
+        "tag": "Pvt+Ny4gAeS0cQBu3aHgWA=="
+      }
+    },
+    "Researcher@University": {
+      "attribute": "Researcher@University",
+      "authority": "University",
+      "encrypted_key": {
+        "iv": "YmPsKBIceXwpUTte",
+        "ciphertext": "zTfhUlb5wTzYMdnupiY1cSCeONFZ1egLTeNXHqJyOw8=",
+        "tag": "0yx2a1nFQO6JMSisXPD6lQ=="
+      }
+    }
+  },
+  "authority_keys": {
+    "University": "eHSLwMXZyZ0JuXI2v5ucx3WDaTA4n1OJCssSW4WPuiQ="
+  }
+}

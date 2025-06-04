@@ -1,0 +1,17 @@
+{
+  "GID": "3",
+  "keys": {
+    "Staff@University": {
+      "attribute": "Staff@University",
+      "authority": "University",
+      "encrypted_key": {
+        "iv": "BQKvTcyV0Nbs1pSy",
+        "ciphertext": "Qufoby9EVfUyzlNLoWoOt/yfojHJBc2+MeuZa8FwxBw=",
+        "tag": "09kFkLSqK82WvtzM8fKr7A=="
+      }
+    }
+  },
+  "authority_keys": {
+    "University": "eHSLwMXZyZ0JuXI2v5ucx3WDaTA4n1OJCssSW4WPuiQ="
+  }
+}

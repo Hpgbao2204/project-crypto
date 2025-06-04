@@ -296,3 +296,66 @@ class EncryptionService:
                 attrs = [attr.name for attr in user_attributes if attr.authority_name == authority]
                 if attrs:
                     self.generate_user_keys(user_id, authority, attrs)
+
+    def encrypt_document(self, doc_path, encryption_method, access_policy, user_id=None):
+        """
+        Encrypt a document using specified encryption method.
+        
+        Args:
+            doc_path (str): Path to the document to encrypt
+            encryption_method (str): Encryption method ('hybrid' or 'maabe')
+            access_policy (str): Access policy for encryption
+            user_id (str, optional): User identifier
+            
+        Returns:
+            str: Path to the encrypted document or None if encryption failed
+        """
+        try:
+            # Validate encryption method
+            if encryption_method not in ['hybrid', 'maabe']:
+                current_app.logger.error(f"Unsupported encryption method: {encryption_method}")
+                return None
+                
+            if encryption_method == 'hybrid':
+                # Use the existing encrypt_file method for hybrid encryption
+                encrypted_path, _ = self.encrypt_file(doc_path, access_policy, user_id or 'anonymous')
+                return encrypted_path
+            elif encryption_method == 'maabe':
+                # Implementation for MA-ABE encryption
+                # This is a simplified version for demo purposes
+                # In production, this would use a more sophisticated MA-ABE implementation
+                
+                # Get global parameters
+                gp = self.get_global_parameters()
+                
+                # Get all authority public keys
+                pks = {}
+                authorities_dir = current_app.config['UPLOAD_FOLDER']
+                
+                for filename in os.listdir(authorities_dir):
+                    if filename.endswith('_pk.json'):
+                        with open(os.path.join(authorities_dir, filename), 'r') as f:
+                            pk = json.load(f)
+                            pks[pk['name']] = pk
+                
+                # Read the input file
+                with open(doc_path, 'rb') as f:
+                    file_data = f.read()
+                    
+                # For demo purposes, we'll use the hybrid_abe encrypt method
+                # In a real implementation, this would use dedicated MA-ABE methods
+                encrypted_data = self.hybrid_abe.encrypt(gp, pks, file_data, access_policy)
+                
+                # Generate output filename
+                output_filename = f"maabe_encrypted_{os.path.basename(doc_path)}.json"
+                output_path = os.path.join(current_app.config['UPLOAD_FOLDER'], output_filename)
+                
+                # Save the encrypted file
+                with open(output_path, 'w') as f:
+                    json.dump(encrypted_data, f)
+                    
+                return output_path
+                    
+        except Exception as e:
+            current_app.logger.error(f"Document encryption failed: {str(e)}")
+            return None

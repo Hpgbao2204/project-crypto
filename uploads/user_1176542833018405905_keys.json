@@ -1,0 +1,26 @@
+{
+  "GID": "1176542833018405905",
+  "keys": {
+    "Officer@Government": {
+      "attribute": "Officer@Government",
+      "authority": "Government",
+      "encrypted_key": {
+        "iv": "Y4iVfwb3vzL2AQjc",
+        "ciphertext": "wYMIbP7TBCH7/nFCJH/muIPZUzoX40iE5ock6+nKbRw=",
+        "tag": "hG8q70vZGQddwGrNnvIc9Q=="
+      }
+    },
+    "Citizen@Government": {
+      "attribute": "Citizen@Government",
+      "authority": "Government",
+      "encrypted_key": {
+        "iv": "RZNLNifheeX85d77",
+        "ciphertext": "o+tHIAeRSS1Ip8mQrtcdDwl5Nnxuvcuo0YaF6fO9WzQ=",
+        "tag": "k4jGqMpiZk/nJOBnBTCzmA=="
+      }
+    }
+  },
+  "authority_keys": {
+    "Government": "FQcViF+vwXVETjQBmgIU/8tMhGm57BweblFMjlhjBqY="
+  }
+}

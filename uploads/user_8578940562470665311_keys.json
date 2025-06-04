@@ -1,0 +1,17 @@
+{
+  "GID": "8578940562470665311",
+  "keys": {
+    "Doctor@Hospital": {
+      "attribute": "Doctor@Hospital",
+      "authority": "Hospital",
+      "encrypted_key": {
+        "iv": "pDlvMwGcsi/qLMlm",
+        "ciphertext": "ukVIRtyk/ssUYYCWNrCisr8yEGZiIvH/ooixknPcWIc=",
+        "tag": "jKXn+LdSz6d1d/fOeIB5FQ=="
+      }
+    }
+  },
+  "authority_keys": {
+    "Hospital": "9QS8Yw4SZ6OFgdpUcrS2+73oOgy5zJEYHrU7pvGulg4="
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "GID": "1",
+  "keys": {
+    "Researcher@University": {
+      "attribute": "Researcher@University",
+      "authority": "University",
+      "encrypted_key": {
+        "iv": "GguITiDvpSXh8pIq",
+        "ciphertext": "tl6oOLl3kN6zmBXeq16DBZ63c/5k94JoRkThDRw5KS8=",
+        "tag": "E0MYDblXuafyDMEn+iZI+g=="
+      }
+    }
+  },
+  "authority_keys": {
+    "University": "eHSLwMXZyZ0JuXI2v5ucx3WDaTA4n1OJCssSW4WPuiQ="
+  }
+}

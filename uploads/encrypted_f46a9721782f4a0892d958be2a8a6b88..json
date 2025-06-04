@@ -1,0 +1,1 @@
+{"policy": "Admin@Hospital", "encrypted_message": {"iv": "B2tmNR4PO9yZJy+w", "ciphertext": "6W9xORIfR4RMupLKMjrXD3VAo2l7xTUCMeCZkg3CoTJckE3JSul9hchoJIubJUmG", "tag": "9h1ix1MXgtZNKUDkdbT/yA=="}, "encrypted_keys": {"Admin@Hospital": {"iv": "IeE+f6uOReogesnK", "ciphertext": "RLy0GTs6eHYs+Mrc/TnlaKsGfaTVEILy3t0f24kO0jI=", "tag": "mppCy1gGBSMxQID6SKHVqQ=="}}}
