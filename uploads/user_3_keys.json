@@ -1,17 +1,27 @@
 {
   "GID": "3",
   "keys": {
+    "Admin@Hospital": {
+      "attribute": "Admin@Hospital",
+      "authority": "Hospital",
+      "encrypted_key": {
+        "iv": "244Q8QN5YhdmR8KI",
+        "ciphertext": "P4LuVfDrVPyI2ST7UZLdhSgkevW8K4uK69X+ICZdN/c=",
+        "tag": "mFmo0zIsguo+T94yUCSS4w=="
+      }
+    },
     "Staff@University": {
       "attribute": "Staff@University",
       "authority": "University",
       "encrypted_key": {
-        "iv": "js8BKX8+dVvKzWCi",
-        "ciphertext": "XEtjqvhHFR8yaON8pAkEc3g75YueDAuCJfZrRhsA/34=",
-        "tag": "ksNf/+WJcgosW3iO+xZk+A=="
+        "iv": "tHAvlERpFbd1VoyX",
+        "ciphertext": "Ha7s3eMJUhxRmqYwSETTz18KoqlFE7GXW3QKc2KSa38=",
+        "tag": "SysfLpONCV4Qwcs2+62QGA=="
       }
     }
   },
   "authority_keys": {
-    "University": "EkgWsQDoUN00ImtiWljiEwQ1Ja1nAH0y3MR3FFy+REo="
+    "Hospital": "WsrFSSrOxfdAbscTz3dvXBhbDkBe2QSch37wzNB2vZo=",
+    "University": "eP3udKnr0/YjiMipu5GCWJ0GUw4DBtb6enecDldzgzo="
   }
 }

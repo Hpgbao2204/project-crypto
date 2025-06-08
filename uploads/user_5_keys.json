@@ -1,0 +1,35 @@
+{
+  "GID": "5",
+  "keys": {
+    "Doctor@Hospital": {
+      "attribute": "Doctor@Hospital",
+      "authority": "Hospital",
+      "encrypted_key": {
+        "iv": "UhxLpjEcw7vChZnL",
+        "ciphertext": "nH2shkm5zNxuqOVmkGRa5rGcyFpD90jQvYM7I0+8fsA=",
+        "tag": "NEbBD5TNjptnHM3DYTNQBQ=="
+      }
+    },
+    "Nurse@Hospital": {
+      "attribute": "Nurse@Hospital",
+      "authority": "Hospital",
+      "encrypted_key": {
+        "iv": "0g35S6Wp2VDdFA/X",
+        "ciphertext": "eWUS4GDPnJJinUK2GPRmKcp7dK2kQN7mroq454DnGFw=",
+        "tag": "irbdRq2jQPH3mB/4QXrQ3A=="
+      }
+    },
+    "Admin@Hospital": {
+      "attribute": "Admin@Hospital",
+      "authority": "Hospital",
+      "encrypted_key": {
+        "iv": "xYw13VxO0Uel2d2t",
+        "ciphertext": "IFGKDVcQq5DYD5Y1IqLno95U8X2krdqnt4Mb6muKGak=",
+        "tag": "76bH37CHj0g33JkGnoNdag=="
+      }
+    }
+  },
+  "authority_keys": {
+    "Hospital": "WsrFSSrOxfdAbscTz3dvXBhbDkBe2QSch37wzNB2vZo="
+  }
+}

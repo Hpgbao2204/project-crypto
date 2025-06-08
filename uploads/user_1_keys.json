@@ -1,17 +1,27 @@
 {
   "GID": "1",
   "keys": {
+    "Doctor@Hospital": {
+      "attribute": "Doctor@Hospital",
+      "authority": "Hospital",
+      "encrypted_key": {
+        "iv": "H+eB/iaD5kKwlBSh",
+        "ciphertext": "25EI5Mu5sSsvKRtcZh1h66h13aBE2aLIrfy4YlDyR6s=",
+        "tag": "6c4V1jqZwJ9LVSfhmq71Pg=="
+      }
+    },
     "Researcher@University": {
       "attribute": "Researcher@University",
       "authority": "University",
       "encrypted_key": {
-        "iv": "yXqmKHW6HqbWcvYJ",
-        "ciphertext": "UB0ZJ6Yqwd+fU0aR7KT/+abjZfwYA7u8LosNb4HPXw0=",
-        "tag": "kqGusXZlKha7jPc/Z2AXvQ=="
+        "iv": "8L7R/fHcDMNnmDNY",
+        "ciphertext": "d4JCJ6QekoV/L/BEfk8LwvyLVfnAgRQzrxIRBK7v4so=",
+        "tag": "jjs362jxwXy+eSfV9CkIpg=="
       }
     }
   },
   "authority_keys": {
-    "University": "EkgWsQDoUN00ImtiWljiEwQ1Ja1nAH0y3MR3FFy+REo="
+    "Hospital": "WsrFSSrOxfdAbscTz3dvXBhbDkBe2QSch37wzNB2vZo=",
+    "University": "eP3udKnr0/YjiMipu5GCWJ0GUw4DBtb6enecDldzgzo="
   }
 }
